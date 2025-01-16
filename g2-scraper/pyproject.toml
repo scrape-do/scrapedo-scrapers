@@ -1,0 +1,17 @@
+[tool.poetry]
+name = G2 Scraper"
+version = "0.1"
+description = "Contains scripts that will be showcased in \"2025 Guide to Scraping G2 with Python\" tutorial"
+authors = ["Serhat Kurtuluş"]
+license = "GNU"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "2.23.0"
+beautifulsoup4 = "4.12.3"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

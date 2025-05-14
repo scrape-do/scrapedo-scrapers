@@ -1,6 +1,6 @@
 # Naver Scraper
 
-This repo includes two examples for scraping product data from Naver using Python `requests` for Scraping and [Scrape.do](https://scrape.do) for bypassing Cloudflare anti-bot and bypass CAPTCHA.
+This folder includes two examples for scraping product data from Naver using Python `requests` for Scraping and [Scrape.do](https://scrape.do) for bypassing Cloudflare anti-bot and bypass CAPTCHA.
 
 One method scrapes the HTML from a product page; the other uses Naver’s internal API for cleaner results.
 

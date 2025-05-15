@@ -1,6 +1,6 @@
 # Naver Scraper
 
-This folder includes two examples for scraping product data from Naver using Python `requests` for Scraping and [Scrape.do](https://scrape.do) for bypassing Cloudflare anti-bot and bypass CAPTCHA.
+This folder includes two examples for scraping product data from Naver using Python `requests` for Scraping and [Scrape.do](https://scrape.do) for bypassing Naver's WAF.
 
 One method scrapes the HTML from a product page; the other uses Naver’s internal API for cleaner results.
 
@@ -15,7 +15,7 @@ For the full guide and documentation, go here: https://scrape.do/blog/naver-scra
 
 * Python 3.7+
 * `requests` library<br>Install with:<br>`pip install requests`
-* A [Scrape.do API token](https://dashboard.scrape.do/signup) for Cloudflare bypass (free 1000 credits/month)
+* A [Scrape.do API token](https://dashboard.scrape.do/signup) for accessing Naver bypassing its WAF (free 1000 credits/month)
 
 ## How to Use: `productpage.py`
 

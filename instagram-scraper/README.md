@@ -1,5 +1,7 @@
 # Instagram Profile & Post Scraper
 
+[Step-by-step guide to scraping Instagram ➡](https://scrape.do/blog/instagram-scraping/)
+
 This repository provides Python scripts to scrape public Instagram profile details, recent posts, and top-level post comments using [Scrape.do](https://scrape.do) web scraping API to bypass blocks and restrictions from anti-bots.
 
 All data is collected from publicly accessible endpoints. No login or session cookies required.

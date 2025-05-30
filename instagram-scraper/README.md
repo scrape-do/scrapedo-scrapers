@@ -6,16 +6,12 @@ This repository provides Python scripts to scrape public Instagram profile detai
 
 All data is collected from publicly accessible endpoints. No login or session cookies required.
 
----
-
 ## What’s Included
 
 * `profileInfo.py`: Scrapes profile information including bio, follower count, and category.
 * `profileTopPosts.py`: Extracts metadata for the 12 most recent public posts from a profile.
 * `postInfo.py`: Retrieves engagement metrics, caption, location, and video URL for a specific post.
 * `postComments.py`: Scrapes top-level comments and threaded replies from a public post.
-
----
 
 ## Requirements
 
@@ -27,8 +23,6 @@ All data is collected from publicly accessible endpoints. No login or session co
   ```
 * A [Scrape.do API token](https://dashboard.scrape.do/signup) (**free** 1000 successful requests/month)
 * (Free 1000 successful requests/month)
-
----
 
 ## 🔍 How to Use Each Script
 
@@ -50,8 +44,6 @@ All data is collected from publicly accessible endpoints. No login or session co
 
 Outputs detailed profile data including follower count, bio, and business categories.
 
----
-
 ### `profileTopPosts.py`
 
 **Extracts recent post metadata (shortcode, caption, likes, media URL) from a user’s profile.**
@@ -69,8 +61,6 @@ Outputs detailed profile data including follower count, bio, and business catego
    ```
 
 Returns details of up to 12 top and recent public posts.
-
----
 
 ### `postInfo.py`
 
@@ -95,8 +85,6 @@ Returns details of up to 12 top and recent public posts.
 
 Returns complete post details including caption, likes, location, and whether it’s a video.
 
----
-
 ### `postComments.py`
 
 **Scrapes top-level comments and replies on a specific post.**
@@ -120,8 +108,6 @@ Returns complete post details including caption, likes, location, and whether it
 
 Returns a nested comment thread structure with timestamps and like counts.
 
----
-
 ## ⚠️ Legal & Ethical Notes
 
 *To stay on the good side of the law and ethics while scraping:*
@@ -129,8 +115,6 @@ Returns a nested comment thread structure with timestamps and like counts.
 * All data scraped must be **publicly accessible without login**.
 * Do **not** use real or fake logged-in accounts to scrape Instagram.
 * Avoid scraping private content, full comment threads, or follower lists; doing so may violate Instagram's [Terms of Use](https://help.instagram.com/581066165581870).
-
----
 
 ## 📈 Why Scrape.do?
 

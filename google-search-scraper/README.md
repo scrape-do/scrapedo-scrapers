@@ -1,6 +1,6 @@
 # Google Search Scraper
 
-This repository provides Python scripts to scrape **organic results**, **search ads**, **FAQs**, and **related search terms** directly from Google Search using [Scrape.do](https://scrape.do).
+This repository provides Python scripts to scrape **multiple pages of organic results**, **search ads**, **FAQs**, and **related search terms** directly from Google Search using [Scrape.do](https://scrape.do).
 
 Scrape.do helps bypass Google's anti-bot mechanisms like WAFs, rate limits, CAPTCHAs and JavaScript rendering.
 

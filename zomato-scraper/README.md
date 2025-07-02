@@ -2,6 +2,8 @@
 
 Scrape restaurant info and full delivery menus from Zomato using Python and the Scrape.do API for proxy & header rotation to bypass IP bans.
 
+[Full technical tutorial is located here. 📕](https://scrape.do/blog/zomato-scraping/)
+
 ## Files:
 
 * restaurantInfo.py – Extracts restaurant name, address, rating, price, etc.

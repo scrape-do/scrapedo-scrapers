@@ -17,7 +17,7 @@ Suited for small-scale jobs or local testing; will get blocked and fail after a 
 ## `bestBuyScrapeDoScraper.py`
 Uses the Scrape.do API to fully render pages in the cloud, simulate scroll and click behavior, and extract all products from all category pages. 
 
-Built for scale and stability with error handling and retry logic.
+Built for scale and stability with error handling and retry logic. [**Get free API token by signing up**](https://dashboard.scrape.do/signup).
 
 ## Why Scrape.do?
 

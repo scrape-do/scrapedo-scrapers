@@ -8,18 +8,18 @@ Both scripts collect brand, title, price, image, model, SKU and print them to a 
 
 [Read full technical guide here.](https://scrape.do/blog/best-buy-scraping/)
 
-##`bestBuySeleniumScraper.py`
+## `bestBuySeleniumScraper.py`
 
 Uses Selenium to launch a real browser, click through the country selection screen, scroll each page, and scrape product data.
 
 Suited for small-scale jobs or local testing; will get blocked and fail after a few runs.
 
-##`bestBuyScrapeDoScraper.py`
+## `bestBuyScrapeDoScraper.py`
 Uses the Scrape.do API to fully render pages in the cloud, simulate scroll and click behavior, and extract all products from all category pages. 
 
 Built for scale and stability with error handling and retry logic.
 
-##Why Scrape.do?
+## Why Scrape.do?
 
 With **Scrape.do**, you don’t need to manage proxies, handle browser execution, or build retry logic from scratch.
 

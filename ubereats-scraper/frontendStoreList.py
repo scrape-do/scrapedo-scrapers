@@ -30,10 +30,6 @@ api_url = (
 # --- Fetch the rendered Uber Eats page ---
 response = requests.get(api_url)
 
-# --- Save raw HTML for debugging/inspection ---
-with open('ubereats_raw.html', 'w', encoding='utf-8') as f:
-    f.write(response.text)
-
 # --- Parse the HTML with BeautifulSoup ---
 soup = BeautifulSoup(response.text, "html.parser")
 store_cards = soup.find_all('div', {'data-testid': 'store-card'})

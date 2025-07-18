@@ -20,14 +20,8 @@ api_url = (
 # --- Fetch the rendered Uber Eats restaurant page ---
 response = requests.get(api_url)
 
-# --- Save raw HTML for debugging/inspection ---
-with open('ubereats_restaurant_raw.html', 'w', encoding='utf-8') as f:
-    f.write(response.text)
-
 # --- Parse the HTML with BeautifulSoup ---
-with open('ubereats_restaurant_raw.html', 'r', encoding='utf-8') as f:
-    html = f.read()
-soup = BeautifulSoup(html, "html.parser")
+soup = BeautifulSoup(response.text, "html.parser")
 
 # --- Extract menu items: category, name, price ---
 results = []

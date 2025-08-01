@@ -5,7 +5,7 @@ import json
 from bs4 import BeautifulSoup
 
 TOKEN = "<your-token>"
-STORE_URL = "https://www.doordash.com/store/denny's-saratoga-springs-800933/28870947/"
+STORE_URL = "<store-url>"
 API_URL = f"http://api.scrape.do/?token={TOKEN}&super=true&url={STORE_URL}"
 
 response = requests.get(API_URL)

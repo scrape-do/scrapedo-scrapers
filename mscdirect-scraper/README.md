@@ -2,7 +2,7 @@
 
 This folder includes a scraper for MSC Direct industrial supply products using Python `requests` and [Scrape.do](https://scrape.do) for bypassing MSC Direct's Incapsula Imperva protection and geo-restrictions using premium proxies.
 
-[Find extended technical guide here. 📘](https://scrape.do/blog/msc-direct-scraping/)
+[Find extended technical guide here. 📘](https://scrape.do/blog/mscdirect-scraping/)
 
 ## What's Included
 

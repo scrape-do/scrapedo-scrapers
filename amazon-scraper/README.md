@@ -8,7 +8,7 @@ This scraper uses __Python 3.8__, __Python Requests__, and __Beautiful Soup__ to
 [Find the full tutorial here.](https://scrape.do/blog/amazon-scraping/)
 
   
-The scraping code consists of 3 different files which is used for 3 different tasks.
+The scraping code consists of 3 files which is used for 3 different tasks.
 
 - single.py // To scrape key product data from product pages.
 

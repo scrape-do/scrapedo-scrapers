@@ -1,8 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 
-# Our token provided by 'scrape.do'
-token = "YOUR_TOKEN"
+# Our token provided by 'Scrape.do'
+token = "<your-token>"
 
 # Amazon product urls
 targetUrls = ["https://us.amazon.com/Amazon-Basics-Portable-Adjustable-Notebook/dp/B0BLRJ4R8F/",

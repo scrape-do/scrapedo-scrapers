@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "Amazon Scraper"
 version = "0.1"
-description = "Contains scripts that will be showcased in \"2025 Guide to Scraping Amazon with Python\" tutorial"
+description = "Contains scripts that will be showcased in \"2025 Guide to Scraping Amazon with Python\" guide"
 authors = ["Scrape.do"]
 license = "GNU"
 

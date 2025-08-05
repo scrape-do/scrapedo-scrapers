@@ -3,8 +3,8 @@ import requests
 from bs4 import BeautifulSoup
 import urllib.parse
 
-# Our token provided by 'scrape.do'
-token = "YOUR_TOKEN"
+# Our token provided by Scrape.do
+token = "<your-token>"
 
 targetUrl = urllib.parse.quote_plus("https://us.amazon.com/Calvin-Klein-Classics-Multipack-T-Shirts/dp/B08SM3QZJG/")
 

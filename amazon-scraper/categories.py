@@ -3,7 +3,7 @@ import csv
 import requests
 from bs4 import BeautifulSoup
 
-# Our token provided by 'scrape.do'
+# Our token provided by 'Scrape.do'
 token = "<your-token>"
 
 current_result_page = 1

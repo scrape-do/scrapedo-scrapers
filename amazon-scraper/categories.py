@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 
 # Our token provided by 'scrape.do'
-token = "YOUR_TOKEN"
+token = "<your-token>"
 
 current_result_page = 1
 max_result_page = 20

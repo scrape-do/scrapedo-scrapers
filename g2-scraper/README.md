@@ -5,7 +5,7 @@ This scraper uses __Python 3.8__, __Python Requests__, and __Beautiful Soup__ to
  __[Scrape.do](https://scrape.do/)__'s web scraping API is used to bypass G2's anti-bot protections and interact with the website.
   
 
-[Find the full tutorial here.]()
+[Find the full tutorial here.](https://scrape.do/blog/g2-scraping/)
 
   
 The scraping code consists of 3 different files which is used for 3 different tasks.

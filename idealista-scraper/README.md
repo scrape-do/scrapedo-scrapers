@@ -12,6 +12,9 @@ This folder includes scrapers for Idealista.com Spanish real estate listings usi
 ### Region/Search Results Scraper
 * `regionSearch.py`: Scrapes multiple property listings from Idealista search result pages with automatic pagination, extracts key property data, and exports to CSV format for bulk data collection.
 
+### Phone Number Extraction (⚠️ GDPR RESTRICTED)
+* `phoneNumbers.py`: **PHONE NUMBERS ARE PERSONAL DATA UNDER GDPR (EU) - FOR PERSONAL USE ONLY** - Extracts phone numbers from property listings using browser automation. **STRICTLY PROHIBITED for commercial use.**
+
 ## Requirements
 
 * Python 3.7+
@@ -83,6 +86,34 @@ Scraping complete! Found 271 total properties.
 Data saved to idealista_properties.csv
 ```
 
+## How to Use: `phoneNumbers.py`
+
+### ⚠️ LEGAL REQUIREMENTS BEFORE USAGE:
+- ✅ **Confirm personal, non-commercial use only**
+- ✅ **Read and understand GDPR implications**
+- ✅ **Verify compliance with local privacy laws**
+- ✅ **Respect individual privacy rights**
+
+### Usage Instructions:
+
+1. **Replace configuration variables:**
+   ```python
+   TOKEN = "<your-scrape-do-token>"
+   TARGET_URL = "<target-property-url>"  # e.g. https://www.idealista.com/inmueble/108889120/
+   ```
+
+2. **Run the script:**
+   ```bash
+   python phoneNumbers.py
+   ```
+
+3. **Expected output:**
+   ```yaml
+   Property Title: Casa o chalet independiente en venta en Carretera de la Costa s/n, Tijarafe
+   Price: 245.000 €
+   Phone Number: +34[REDACTED]
+   ```
+
 ## Technical Details
 
 ### API Configuration
@@ -95,7 +126,7 @@ Idealista uses **DataDome anti-bot protection**, **back-to-back CAPTCHAs**, and 
 
 ### Common Errors
 
-**403 or 429:** DataDome protection or back-to-back CAPTCHAs triggered; premium routing via `super=true` required<br>**Spanish geo-targeting needed:** Content only accessible from Spain via `geoCode=es`<br>**JavaScript rendering required:** Property pages need full rendering for dynamic content<br>**CAPTCHA challenges:** DataDome may present multiple CAPTCHAs; automatic bypass via premium routing<br>**Element not found:** Property may not exist or page structure changed<br>**No listings found:** Search results page may be empty or pagination ended
+**403 or 429:** DataDome protection or back-to-back CAPTCHAs triggered; premium routing via `super=true` required<br>**Spanish geo-targeting needed:** Content only accessible from Spain via `geoCode=es`<br>**JavaScript rendering required:** Property pages need full rendering for dynamic content<br>**CAPTCHA challenges:** DataDome may present multiple CAPTCHAs; automatic bypass via premium routing<br>**Element not found:** Property may not exist or page structure changed<br>**No listings found:** Search results page may be empty or pagination ended<br>**⚠️ GDPR Violation:** Using phone extraction for commercial purposes - **ILLEGAL UNDER EU LAW**<br>**⚠️ Privacy Law Breach:** Bulk phone number extraction - **MASSIVE FINES POSSIBLE**
 
 ## Why Use Scrape.do?
 

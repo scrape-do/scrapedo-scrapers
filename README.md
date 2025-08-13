@@ -18,7 +18,7 @@ This repository also uses [Scrape.do](https://scrape.do/)'s web scraping API, __
 
 | Domain | Status | Scraped Data | Tutorial | Last Updated |
 |--------|--------|---------|----------|--------------|
-| [Amazon](./amazon-scraper/) | 🟢 Working | • Product data from single pages<br>• Product variants with different sizes<br>• Search results and categories | [Scrape Product Data from Amazon](https://scrape.do/blog/amazon-scraping/) | Aug 5, 2025 |
+| [Amazon](./amazon-scraper/) | 🟢 Working | • Product data from single pages<br>• Product variants with different sizes<br>• Search results and categories | [Scrape Product Data from Amazon](https://scrape.do/blog/amazon-scraping/) | Aug 13, 2025 |
 | [eBay](./ebay-scraper/) | 🟢 Working | • Basic product listings<br>• Product reviews with pagination<br>• Search results with multiple layouts<br>• Product variants and hidden data | [Scrape Products, Reviews, and Variants from eBay](https://scrape.do/blog/ebay-scraping/) | Aug 1, 2025 |
 | [Google Search](./google-search-scraper/) | 🟢 Working | • First page organic results<br>• All paginated organic results<br>• Paid search advertisements<br>• Frequently asked questions<br>• Related search terms | [Scrape Organic Results, Ads, and FAQs from Google](https://scrape.do/blog/scraping-google-search-results/) | Jun 23, 2025 |
 | [Instagram](./instagram-scraper/) | 🟢 Working | • Profile information and bio<br>• Top 12 recent posts<br>• Individual post details<br>• Post comments and replies | [Scrape Profiles, Posts, and Comments from Instagram](https://scrape.do/blog/instagram-scraping/) | May 30, 2025 |

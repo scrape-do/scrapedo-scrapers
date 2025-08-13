@@ -3,20 +3,24 @@ import csv
 import requests
 from bs4 import BeautifulSoup
 
-# Our token provided by 'Scrape.do'
+# Configuration
 token = "<your-token>"
+base_url = "https://www.amazon.com/s?k=laptop+stands"  # Change this to any search or category URL
+max_result_page = 4
 
 current_result_page = 1
-max_result_page = 20
-
-# Initialize list to store product data
 all_products = []
-
 
 # Loop through all result pages
 while True:
-
-    targetUrl = urllib.parse.quote("https://www.amazon.com/s?k=laptop+stands&page={}".format(current_result_page))
+    # Handle URLs with existing page parameter or add new one
+    if "&page=" in base_url or "?page=" in base_url:
+        target_url = base_url.replace("&page=1", "").replace("?page=1", "") + f"&page={current_result_page}"
+    else:
+        separator = "&" if "?" in base_url else "?"
+        target_url = f"{base_url}{separator}page={current_result_page}"
+    
+    targetUrl = urllib.parse.quote(target_url)
     apiUrl = "https://api.scrape.do?token={}&url={}".format(token, targetUrl)
     response = requests.request("GET", apiUrl)
 

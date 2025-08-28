@@ -45,4 +45,6 @@ This repository also uses [Scrape.do](https://scrape.do/)'s web scraping API, __
 | [TicketMaster](./ticketmaster-scraper/) | 🟢 Working | • Event details and schedules<br>• Dates, venues, and locations | [Scrape Events from TicketMaster](https://scrape.do/blog/ticketmaster-scraping/) | Aug 5, 2025 |
 | [TruePeopleSearch](./truepeoplesearch-scraper/) | 🟢 Working | • Person information lookup<br>• Names, addresses, and contacts | [Scrape People Data from TruePeopleSearch](https://scrape.do/blog/true-people-search-scraping/) | Aug 5, 2025 |
 | [Zoro](./zoro-scraper/) | 🟢 Working | • Industrial business supplies<br>• Product names and manufacturer data | [Scrape Business Supplies from Zoro](https://scrape.do/blog/zoro-scraping/) | Aug 5, 2025 |
+| [Cineworld](./cineworld-scraper/) | 🟢 Working | • Movie screenings and showtimes<br>• Ticket prices for all screening types | [Scrape Screenings and Ticket Prices from Cineworld](https://scrape.do/blog/cineworld-scraping/) | Aug 27, 2025 |
+| [Regmovies](./regmovies-scraper/) | 🟢 Working | • Regal Cinemas movie screenings<br>• Ticket prices and availability | [Scrape Screenings and Ticket Prices from Regmovies](https://scrape.do/blog/regmovies-com-scraping/) | Aug 27, 2025 |
 

@@ -12,7 +12,7 @@ This folder includes scrapers for various Naver services using Python `requests`
 
 ### Search Scrapers
 * `naverSearchAds.py`: Scrapes paid search advertisements from Naver search results.
-* `naverSearchOrganic.py`: Scrapes organic search results from Naver with pagination support.
+* `naverSearchOrganic.py`: Scrapes organic search results from Naver with pagination support using JavaScript data extraction.
 * `naverSearchImages.py`: Scrapes image search results using Naver's image search API.
 
 ## Requirements
@@ -109,7 +109,7 @@ A file called `naver_organic_results.csv` will be created with:
 * **URL**
 * **Description**
 
-The script automatically scrapes multiple pages and includes retry logic for better results.
+The script automatically scrapes multiple pages and includes retry logic for better results. Uses JavaScript data extraction to handle Naver's modern search result structure.
 
 ## How to Use: `naverSearchImages.py`
 

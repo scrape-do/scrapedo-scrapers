@@ -3,6 +3,8 @@ import urllib.parse
 from bs4 import BeautifulSoup
 import csv
 import time
+import re
+import json
 
 # Your Scrape.do token
 token = "<your_token>"
@@ -15,7 +17,7 @@ def scrape_page(page_num, start_num):
     
     # Build URL with pagination, enable super=true on Scrape.do API for better results
     target_url = f"https://search.naver.com/search.naver?where=web&query={urllib.parse.quote(query)}&page={page_num}&start={start_num}"
-    api_url = f"https://api.scrape.do?token={token}&url={urllib.parse.quote_plus(target_url)}&geoCode=kr"
+    api_url = f"https://api.scrape.do?token={token}&url={urllib.parse.quote_plus(target_url)}&geoCode=kr&super=true"
     
     response = requests.get(api_url)
     if response.status_code != 200:
@@ -24,49 +26,68 @@ def scrape_page(page_num, start_num):
     soup = BeautifulSoup(response.text, 'html.parser')
     results = []
     
-    for container in soup.find_all('li', class_='bx'):
-        try:
-            title_link = container.find('a', class_='link_tit')
-            if not title_link:
+    # Extract search results from JavaScript data
+    script_tags = soup.find_all('script')
+    for script in script_tags:
+        if script.string and 'entry.bootstrap' in script.string:
+            try:
+                script_content = script.string
+                
+                # Find the JSON object passed to entry.bootstrap
+                start_pos = script_content.find('entry.bootstrap(')
+                if start_pos == -1:
+                    continue
+                
+                # Find the first opening brace after the function call
+                brace_start = script_content.find('{', start_pos)
+                if brace_start == -1:
+                    continue
+                
+                # Count braces to find the matching closing brace
+                brace_count = 0
+                end_pos = brace_start
+                for i, char in enumerate(script_content[brace_start:], brace_start):
+                    if char == '{':
+                        brace_count += 1
+                    elif char == '}':
+                        brace_count -= 1
+                        if brace_count == 0:
+                            end_pos = i
+                            break
+                
+                json_str = script_content[brace_start:end_pos + 1]
+                
+                # Parse the JSON data
+                data = json.loads(json_str)
+                
+                # Extract search results from the data structure
+                if 'body' in data and 'props' in data['body'] and 'children' in data['body']['props']:
+                    children = data['body']['props']['children']
+                    if len(children) > 0 and 'props' in children[0] and 'children' in children[0]['props']:
+                        search_items = children[0]['props']['children']
+                        
+                        for item in search_items:
+                            if 'props' in item:
+                                props = item['props']
+                                
+                                # Extract title, URL, and description
+                                title = props.get('title', 'No title')
+                                url = props.get('href', '')
+                                body_text = props.get('bodyText', 'No description available')
+                                
+                                # Clean up HTML markup from title and description
+                                title = re.sub(r'<[^>]+>', '', title).strip()
+                                body_text = re.sub(r'<[^>]+>', '', body_text).strip()
+                                
+                                # Only add if we have a valid URL
+                                if url and url.startswith('http'):
+                                    results.append([title, url, body_text])
+                
+                break  # Found the data, no need to check other scripts
+                
+            except (json.JSONDecodeError, KeyError, IndexError) as e:
+                print(f"Error parsing JavaScript data on page {page_num}: {e}")
                 continue
-            
-            title = title_link.get_text(strip=True)
-            url = title_link.get('href', '')
-            
-            # Try to find description with multiple selectors
-            description = "No description available"
-            
-            # Try different description selectors
-            desc_selectors = [
-                'a.api_txt_lines.total_dsc',
-                'div.total_dsc_wrap a',
-                'div.total_dsc_wrap',
-                'a.link_dsc',
-                'div.dsc'
-            ]
-            
-            for selector in desc_selectors:
-                desc = container.select_one(selector)
-                if desc:
-                    description = desc.get_text(strip=True)
-                    break
-            
-            # Fallback: try to get text from total_group
-            if description == "No description available":
-                total_group = container.find('div', class_='total_group')
-                if total_group:
-                    all_text = total_group.get_text(strip=True)
-                    title_text = title_link.get_text(strip=True)
-                    # Remove title from description
-                    description = all_text.replace(title_text, '').strip()
-                    if not description:
-                        description = "No description available"
-            
-            results.append([title, url, description])
-            
-        except Exception as e:
-            print(f"Error on page {page_num}: {e}")
-            continue
     
     return results
 

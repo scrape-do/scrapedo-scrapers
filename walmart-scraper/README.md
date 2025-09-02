@@ -9,7 +9,7 @@ The tools here let you:
 - Track stock availability and price changes over time with automated alerts
 - Save results to CSV for easy analysis
 
-[Get fully functioning code from our GitHub repo ⚙](https://github.com/scrape-do/scrapedo-scrapers/tree/main/walmart-scraper)
+[Get full technical tutorial here 📕](https://scrape.do/blog/walmart-scraping/)
 
 All scripts use Python 3.7+, the `requests` library, and `BeautifulSoup` for HTML parsing.
 

@@ -47,4 +47,4 @@ This repository also uses [Scrape.do](https://scrape.do/)'s web scraping API, __
 | [Zoro](./zoro-scraper/) | 🟢 Working | • Industrial business supplies<br>• Product names and manufacturer data | [Scrape Business Supplies from Zoro](https://scrape.do/blog/zoro-scraping/) | Aug 5, 2025 |
 | [Cineworld](./cineworld-scraper/) | 🟢 Working | • Movie screenings and showtimes<br>• Ticket prices for all screening types | [Scrape Screenings and Ticket Prices from Cineworld](https://scrape.do/blog/cineworld-scraping/) | Aug 27, 2025 |
 | [Regmovies](./regmovies-scraper/) | 🟢 Working | • Regal Cinemas movie screenings<br>• Ticket prices and availability | [Scrape Screenings and Ticket Prices from Regmovies](https://scrape.do/blog/regmovies-com-scraping/) | Aug 27, 2025 |
-
+| [Redfin](./redfin-scraper/) | 🟢 Working | • Property details<br>• Local listings and details | [Scrape Property Details and Search Results from Redfin](https://scrape.do/blog/redfin-scraping/) | Oct 03, 2025 |

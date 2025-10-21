@@ -1,5 +1,6 @@
 import requests
 import csv
+import urllib.parse
 from bs4 import BeautifulSoup
 
 # Configuration
@@ -22,7 +23,9 @@ while page < max_pages:
         first = 1 + (page * 10)
         page_url = f"https://www.bing.com/search?q={query}&first={first}"
     
-    api_url = f"http://api.scrape.do?token={token}&url={page_url}&geoCode=us"
+    # URL encode the target URL for Scrape.do
+    encoded_url = urllib.parse.quote(page_url, safe='')
+    api_url = f"http://api.scrape.do?token={token}&url={encoded_url}&geoCode=us"
     
     offset_str = "first page" if page == 0 else f"first={first}"
     print(f"Page {page + 1} ({offset_str})...", end=" ")
@@ -34,15 +37,23 @@ while page < max_pages:
     # Extract results from this page
     page_results = []
     for result in soup.find_all("li", class_="b_algo"):
-        title = result.find("h2").get_text(strip=True)
-        link = result.find("h2").find("a")["href"]
-        description = result.find("p", class_="b_lineclamp2").get_text(strip=True)
-        
-        page_results.append({
-            "title": title,
-            "url": link,
-            "description": description
-        })
+        try:
+            # Extract title and link
+            h2_tag = result.find("h2")
+            title = h2_tag.get_text(strip=True)
+            link = h2_tag.find("a")["href"]
+            
+            # Extract description (may not always exist)
+            desc_tag = result.find("p", class_="b_lineclamp2")
+            description = desc_tag.get_text(strip=True) if desc_tag else ""
+            
+            page_results.append({
+                "title": title,
+                "url": link,
+                "description": description
+            })
+        except:
+            continue
     
     # Check if we found results
     if len(page_results) == 0:

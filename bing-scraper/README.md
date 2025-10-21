@@ -98,13 +98,14 @@ Images will be saved to a `downloaded_images/` folder with filenames like `coffe
 
 ## How to Use: `bingShoppingScraper.py`
 
-**Scrapes product listings from Bing Shopping.**
+**Scrapes product listings from Bing Shopping with pagination.**
 
 1. Replace the token and query:
 
    ```python
    token = "<your-token>"
    query = "iphone"
+   max_pages = 5
    ```
 
 2. Run:
@@ -119,7 +120,10 @@ Images will be saved to a `downloaded_images/` folder with filenames like `coffe
 * **Seller** - Seller/store name
 * **URL** - Link to the product page
 
-**Note:** This scraper uses `super=true` parameter for better JavaScript rendering.
+**Features:**
+* Automatic pagination through multiple pages using `&page=` parameter
+* Stops when no products are found or max_pages is reached
+* Uses `super=true` parameter for better JavaScript rendering
 
 ---
 
@@ -158,7 +162,7 @@ Images will be saved to a `downloaded_images/` folder with filenames like `coffe
 
 ## Common Notes
 
-* **URL Encoding:** Image and shopping scrapers use `urllib.parse.quote()` to properly encode URLs with query parameters.
+* **URL Encoding:** Web search (for pagination), image, shopping, and news scrapers use `urllib.parse.quote()` to properly encode URLs with query parameters.
 * **Geo-targeting:** All scrapers use `geoCode=us` for US-based results. Change this to target different regions (e.g., `geoCode=uk`, `geoCode=de`).
 * **Error Handling:** All scrapers include try/except blocks to handle missing elements gracefully.
 * **Super Mode:** If you're seeing results from a different country than what you've enabled in the `geoCode=` parameter, you might need to enable `super=true` to fetch results in your preferred country.

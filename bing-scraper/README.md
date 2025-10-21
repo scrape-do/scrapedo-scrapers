@@ -15,6 +15,7 @@ All scripts use publicly accessible HTML data and require no login or authentica
 * `bingSearchScraper.py`: Scrapes organic web search results with pagination support (title, URL, description).
 * `bingImageScraper.py`: Scrapes image search results with optional download functionality (title, image URL, source URL, thumbnail).
 * `bingShoppingScraper.py`: Scrapes shopping/product results (product name, price, seller, URL).
+* `bingNewsScraper.py`: Scrapes news articles with infinite scroll pagination (title, URL, snippet, source, published time).
 
 ---
 
@@ -119,6 +120,39 @@ Images will be saved to a `downloaded_images/` folder with filenames like `coffe
 * **URL** - Link to the product page
 
 **Note:** This scraper uses `super=true` parameter for better JavaScript rendering.
+
+---
+
+## How to Use: `bingNewsScraper.py`
+
+**Scrapes news articles from Bing News with infinite scroll pagination.**
+
+1. Replace the token and query:
+
+   ```python
+   token = "<your-token>"
+   query = "tesla"
+   max_results = 100
+   ```
+
+2. Run:
+
+   ```bash
+   python bingNewsScraper.py
+   ```
+
+**Output:** A CSV file `bing_news_results.csv` with:
+* **Title** - Article headline
+* **URL** - Link to the full article
+* **Snippet** - Article summary/excerpt
+* **Source** - Publisher name (e.g., BBC, Yahoo Finance)
+* **Published Time** - When the article was published (e.g., "1d", "2h")
+
+**Features:**
+* Uses Bing's infinite scroll API endpoint for news
+* Sorted by date (most recent first)
+* Automatic pagination (increments by 10)
+* Stops when no more articles are available or max_results is reached
 
 ---
 

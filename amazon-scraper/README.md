@@ -17,6 +17,16 @@ A comprehensive Amazon scraping toolkit powered by [Scrape.do](https://scrape.do
 | **sponsoredProducts** | Extract sponsored ads from search results | JSON |
 | **relatedSearches** | Get related search suggestions | Terminal |
 
+## Tutorials
+
+For detailed step-by-step guides on how each scraper works:
+
+- [How to Scrape Amazon Product Pages](https://scrape.do/blog/amazon-scraping/) - PDP, seller offers, and variations
+- [How to Scrape Amazon Search Results](https://scrape.do/blog/scrape-amazon-search/) - Search results, related searches, and sponsored products
+- [How to Scrape Amazon Best Sellers](https://scrape.do/blog/scrape-amazon-best-sellers/) - Best seller rankings by category
+- [How to Scrape Amazon Reviews](https://scrape.do/blog/scrape-amazon-reviews/) - Product reviews (includes technical guidelines for authenticated scraping, though large-scale or commercial use behind login is prohibited)
+- [Best Amazon Scraper APIs Compared](https://scrape.do/blog/best-amazon-scraper-api/) - Performance benchmarks of top Amazon scraping APIs
+
 ## Quick Start
 
 ### Python

@@ -1,184 +1,141 @@
 # Amazon Scraper
 
-This folder provides Python scripts to extract product data, reviews, and search results from Amazon using [Scrape.do](https://scrape.do) to bypass Amazon's anti-bot protection and handle JavaScript rendering.
+A comprehensive Amazon scraping toolkit powered by [Scrape.do](https://scrape.do). Extract product data, search results, reviews, seller offers, and more from Amazon with ready-to-use scripts in Python, Node.js, and cURL.
 
-The tools here let you:
-- Scrape individual product details from Amazon product pages
-- Extract product reviews with ratings, dates, and helpful vote counts
-- Scrape search results and category pages with automatic pagination
-- Extract product variations (size, color, etc.) from complex multi-variant products
-- Save results to CSV for easy analysis
+> **Note:** The Python and Node.js scripts can work without Scrape.do. If you have your own headless browser setup with rotating proxies and proper headers, simply replace the API URL with your direct Amazon request. The parsing logic will work the same way.
 
-[Find extended technical guide here](https://scrape.do/blog/amazon-scraping/) and [here 📘](https://scrape.do/blog/scrape-amazon-reviews/).
+## Features
 
-All scripts use Python 3.7+, the `requests` library, and `BeautifulSoup` for HTML parsing.
+| Scraper | Description | Output |
+|---------|-------------|--------|
+| **searchResults** | Scrape product listings from search queries | CSV |
+| **singleProduct** | Extract detailed product information by ASIN | CSV |
+| **productVariations** | Recursively scrape all color/size variations | CSV |
+| **reviews** | Extract customer reviews for any product | CSV |
+| **bestSellers** | Scrape best seller rankings by category | CSV |
+| **sellerOffers** | Get all seller listings for a product | CSV |
+| **sponsoredProducts** | Extract sponsored ads from search results | JSON |
+| **relatedSearches** | Get related search suggestions | Terminal |
 
----
+## Quick Start
 
-## What's Included
+### Python
 
-### 1. `singleVariationProduct.py`
-**Scrapes individual product details from a specific Amazon product page.**
-
-- Uses Scrape.do to render the product page and extract key information
-- Extracts product title, price, main image, and basic product details
-- Handles out-of-stock products and price variations
-- Simple single-page scraping for standard products
-- Example usage:
-  ```bash
-  python singleVariationProduct.py
-  ```
-
-### 2. `multipleVariationProduct.py`
-**Extracts all product variations from complex multi-variant Amazon products.**
-
-- **Recursive scraping** through all product dimensions (color, size, style, etc.)
-- Automatically discovers available variation options from product pages
-- Extracts complete variation matrix with prices for each combination
-- Prioritizes dimension traversal order for optimal scraping efficiency
-- Saves comprehensive variation data to `amazon_variations.csv`
-- Example usage:
-  ```bash
-  python multipleVariationProduct.py
-  # Output: amazon_variations.csv
-  ```
-
-### 3. `reviews.py`
-**Scrapes Amazon product reviews with detailed metadata.**
-
-- Extracts star ratings, review dates, review content, and helpful vote counts
-- Handles reviews from any country (automatically extracts clean dates)
-- Extracts numeric helpful vote counts from text (e.g., "2" from "2 people found this helpful")
-- Uses robust selectors to ensure all reviews have star ratings
-- Saves results to `amazon_reviews.csv`
-- Example usage:
-  ```bash
-  python reviews.py
-  # Output: amazon_reviews.csv
-  ```
-
-### 4. `category&SearchResults.py`
-**Scrapes Amazon search results and category pages with configurable URLs.**
-
-- **Easy URL configuration** - just change the `base_url` variable
-- Automatic pagination handling for search results and category pages
-- Smart URL parameter management (handles existing page parameters)
-- Works with any Amazon search query or category URL
-- Extracts product names, prices, links, and images
-- Saves results to `amazon_search_results.csv`
-- Example usage:
-  ```bash
-  python category&SearchResults.py
-  # Output: amazon_search_results.csv
-  ```
-
----
-
-## Requirements
-
-- Python 3.7+
-- `requests`, `beautifulsoup4`, and `csv` libraries
-  ```bash
-  pip install requests beautifulsoup4
-  ```
-- A [Scrape.do API token](https://dashboard.scrape.do/signup) (free 1000 credits/month)
-
----
-
-## Setup & Step-by-Step Usage
-
-1. **Register for a Scrape.do API token** and replace `<your-token>` in all scripts.
-
-2. **Configure target URLs as needed:**
-   - For `singleVariationProduct.py`: Set the `PRODUCT_URL` variable
-   - For `multipleVariationProduct.py`: Set the `PRODUCT_URL` variable  
-   - For `reviews.py`: Set the `url` variable to any Amazon product page
-   - For `category&SearchResults.py`: Set the `base_url` variable to any search or category URL
-
-3. **Run the desired script:**
-   ```bash
-   python singleVariationProduct.py     # Individual product details
-   python multipleVariationProduct.py   # All product variations
-   python reviews.py                    # Product reviews
-   python category&SearchResults.py     # Search results/categories
-   ```
-
-4. **Check the output CSV files for your results.**
-
----
-
-## Technical Details
-
-### Multi-Variation Scraping
-`multipleVariationProduct.py` uses recursive dimension traversal:
-- **Dimension discovery**: Automatically finds available variations (color, size, etc.)
-- **Priority ordering**: Optimizes scraping order based on common variation types
-- **Recursive extraction**: Systematically explores all variation combinations
-- **Selection detection**: Identifies currently selected variations on each page
-
-### URL Configuration
-`category&SearchResults.py` handles flexible URL input:
-- **Search URLs**: `"https://www.amazon.com/s?k=wireless+headphones"`
-- **Category URLs**: `"https://www.amazon.com/Electronics/b?node=172282"`
-- **Filtered URLs**: Automatically handles existing parameters and filters
-- **Pagination**: Smart page parameter injection for any URL structure
-
-### Review Data Extraction
-`reviews.py` uses robust parsing techniques:
-- **Multi-country support**: Handles "Reviewed in [Country] on [Date]" formats
-- **Fallback selectors**: Multiple star rating detection methods
-- **Clean data output**: Numeric helpful votes and clean date formats
-
----
-
-## Configuration Examples
-
-### Search Different Products
-```python
-# In category&SearchResults.py
-base_url = "https://www.amazon.com/s?k=laptop+stands"        # Search query
-base_url = "https://www.amazon.com/Electronics/b?node=172282" # Category page
-base_url = "https://www.amazon.com/s?k=books&rh=p_36%3A-1000" # With price filter
+```bash
+cd python
+pip install -r ../requirements.txt
+python searchResults.py
 ```
 
-### Scrape Different Product Pages
-```python
-# In reviews.py or variation scripts
-url = "https://us.amazon.com/Apple-iPhone-Plus-128GB-Blue/dp/B0CG84XR6N/"
-url = "https://us.amazon.com/Calvin-Klein-Underwear-Classics/dp/B07TCJS1NS"
+### Node.js
+
+```bash
+cd node.js
+npm install
+node searchResults.js
 ```
 
----
+### cURL (Scrape.do Ready API)
 
-## Troubleshooting & Tips
+```bash
+cd "cURL(ready-API)"
+bash search.sh
+```
 
-- **403 or 429 errors:**
-  - Make sure your Scrape.do token is valid and you have credits left
-  - Double-check your target URLs are accessible
+## Configuration
 
-- **Missing variation data:**
-  - Some products may not have variations or may use different HTML structures
-  - Check that the product page has size/color/style options
+Each script has a configuration section at the top. Update the token and parameters as needed:
 
-- **Empty review data:**
-  - Ensure the product has reviews and the review section is publicly accessible
-  - Some new products may not have reviews yet
+```python
+# Python
+token = "<SDO-token>"
+asin = "B07TCJS1NS"  # Change this to any product ASIN
+geocode = "us"
+zipcode = "10001"
+```
 
----
+```javascript
+// Node.js
+const token = "<SDO-token>";
+const asin = "B07TCJS1NS"; // Change this to any product ASIN
+const geocode = "us";
+const zipcode = "10001";
+```
 
-## Legal & Ethical Notes
+## Scrape.do Amazon API Endpoints
 
-- Only scrape publicly accessible data and respect Amazon's terms of service
-- Do not automate excessive requests or use scraped data for commercial purposes without permission
-- Scrape.do handles proxies, headers, and anti-bot solutions for you, but always use scraping responsibly
+The `cURL(ready-API)` folder contains scripts that use Scrape.do's structured Amazon API endpoints:
 
----
+### Product Detail Page (PDP)
+```
+GET https://api.scrape.do/plugin/amazon/pdp
+    ?token=<SDO-token>
+    &asin=B0C7BKZ883
+    &geocode=us
+    &zipcode=10001
+```
 
-## Why Use Scrape.do?
+### Search Results
+```
+GET https://api.scrape.do/plugin/amazon/search
+    ?token=<SDO-token>
+    &keyword=laptop%20stands
+    &geocode=us
+    &zipcode=10001
+    &page=1
+```
 
-- Rotating premium proxies & geo-targeting
-- Built-in header spoofing and browser fingerprinting
-- Handles redirects, CAPTCHAs, and JavaScript rendering
-- 1000 free credits/month
+### Seller Offers
+```
+GET https://api.scrape.do/plugin/amazon/offer-listing
+    ?token=<SDO-token>
+    &asin=B0DGJ7HYG1
+    &geocode=us
+    &zipcode=10001
+```
 
-[Get your free API token here](https://dashboard.scrape.do/signup)
+## Installation
+
+### Python Requirements
+```bash
+pip install requests beautifulsoup4
+```
+
+### Node.js Requirements
+```bash
+npm install axios cheerio csv-writer
+```
+
+## Usage Examples
+
+### Scrape Search Results (Python)
+```bash
+python python/searchResults.py
+# Output: searchResults.csv
+```
+
+### Scrape Product Reviews (Node.js)
+```bash
+node node.js/reviews.js
+# Output: reviews.csv
+```
+
+### Get Product Data via API (cURL)
+```bash
+bash "cURL(ready-API)/pdp.sh"
+# Output: output/SDOpdp.json
+```
+
+## Output Examples
+
+Sample outputs can be found in [output](output) folder.
+
+## License
+
+MIT - see [LICENSE](LICENSE) for details.
+
+## Links
+
+- [Scrape.do](https://scrape.do)
+- [Scrape.do Documentation](https://scrape.do/documentation/)
+- [Amazon Scraper API Docs](https://scrape.do/documentation/amazon-scraper-api/)

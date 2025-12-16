@@ -1,0 +1,22 @@
+{
+  "name": "amazon-scraper",
+  "version": "1.0.0",
+  "description": "Amazon scraping toolkit powered by Scrape.do",
+  "scripts": {
+    "search": "node node.js/searchResults.js",
+    "product": "node node.js/singleProduct.js",
+    "reviews": "node node.js/reviews.js",
+    "variations": "node node.js/productVariations.js",
+    "bestsellers": "node node.js/bestSellers.js",
+    "offers": "node node.js/sellerOffers.js",
+    "sponsored": "node node.js/sponsoredProducts.js",
+    "related": "node node.js/relatedSearches.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "csv-writer": "^1.6.0"
+  },
+  "author": "",
+  "license": "MIT"
+}

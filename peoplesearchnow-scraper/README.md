@@ -66,7 +66,11 @@ The script uses US-based residential proxies (`geoCode=us`) which are essential 
 
 ## Common Errors
 
-**403 or 429:** Your IP might be blocked; the script uses US residential proxies via `geoCode=us`<br>**Element not found:** Person profile may not exist or be formatted differently<br>**Parsing errors:** Profile page structure may have changed; verify the page loads correctly<br>**Missing address data:** Some profiles may not have current address information<br>**Split errors:** City/state format may vary for different profiles
+- **403 or 429:** Your IP might be blocked; the script uses US residential proxies via `geoCode=us`
+- **Element not found:** Person profile may not exist or be formatted differently
+- **Parsing errors:** Profile page structure may have changed; verify the page loads correctly
+- **Missing address data:** Some profiles may not have current address information
+- **Split errors:** City/state format may vary for different profiles
 
 ## Output Format
 

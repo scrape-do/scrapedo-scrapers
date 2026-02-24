@@ -2,6 +2,8 @@
 
 This folder includes a scraper for PeopleSearchNow.com people lookup using Python `requests` and [Scrape.do](https://scrape.do) for bypassing PeopleSearchNow's protection systems using premium US residential proxies.
 
+[Find the full guide and documentation here. 📗](https://scrape.do/blog/people-search-now-scraping/)
+
 ## What's Included
 
 ### Person Information Scraper

@@ -7,7 +7,7 @@ This folder includes a scraper for FastPeopleSearch.com people lookup using Pyth
 ## What's Included
 
 ### Person Information Scraper
-* `scrapePersonInfo.py`: Scrapes detailed person information from FastPeopleSearch profile pages including name, age, location, and address data.
+* `scrapePersonInfo.py`: Scrapes detailed person information from FastPeopleSearch profile pages including name, age, address, ZIP code, phone numbers, email addresses, aliases, and relatives.
 
 ## Requirements
 
@@ -37,46 +37,57 @@ The script will display person information in the console:
 
 ```yaml
 Name: John Doe
-Age: 35
-City: Los Angeles
-State: CA
-Address: 123 Main Street
+Age: 47
+Address: 756 E 91st St
+City: Chicago
+State: IL (Illinois)
+ZIP: 60601
+Phone: (312) 555-0199
+Email: johndoe@example.com
+Aliases: John A Doe, John Anthony Doe, Johnny Doe
+Relatives: Mary Doe, Robert Smith, Emily Doe, Thomas Doe, Sarah Johnson
 ```
 
 ## Technical Details
 
 ### Data Extraction Method
-The scraper uses HTML element selectors to extract person information from FastPeopleSearch profile pages:
+The scraper uses a combination of HTML element selectors and JSON-LD structured data to extract person information:
 
-- **Name and location parsing**: Extracts from `h1#details-header` element and splits location data
-- **Age extraction**: Uses `h2#age-header` selector and removes "Age " prefix
-- **Address parsing**: Targets `div#current_address_section` to find current address information
+- **Name and location**: Parsed from `h1#details-header`, split on "in" to separate name from city/state
+- **Age**: Extracted from `h2#age-header` with "Age " prefix removed
+- **Address**: First text line from `div#current_address_section` anchor element
+- **ZIP code**: Extracted from JSON-LD `Person.homeLocation.address.postalCode`
+- **Phone numbers and aliases**: Extracted from JSON-LD `Person.telephone` and `Person.additionalName` arrays
+- **Relatives**: Parsed from JSON-LD `Person.relatedTo` array of nested Person objects
+- **Emails**: Extracted from `FAQPage` JSON-LD block, where email answers contain plaintext addresses (bypasses Cloudflare's XOR email obfuscation in HTML)
 - **US geo-targeting**: Uses `geoCode=us` parameter for residential proxy routing
 
 ### Element Selectors Used
-- Header information: `h1#details-header`
-- Age data: `h2#age-header`
-- Address section: `div#current_address_section`
+- Header: `h1#details-header` (name + city/state)
+- Age: `h2#age-header`
+- Address: `div#current_address_section a`
+- Person data: JSON-LD `@type: "Person"` in `<script type="application/ld+json">`
+- Email data: JSON-LD `@type: "FAQPage"` in `<script type="application/ld+json">`
 
 ### Proxy Configuration
-The script uses US-based residential proxies (`geoCode=us`) which are essential for accessing FastPeopleSearch content reliably.
+The script uses US-based residential proxies (`geoCode=us` + `super=true`) which are essential for accessing FastPeopleSearch. The site enforces US geoblocking and Cloudflare protection that blocks datacenter IPs.
 
 ## Common Errors
 
-**403 or 429:** Your IP might be blocked; the script uses US residential proxies via `geoCode=us`<br>**Element not found:** Person profile may not exist or be formatted differently<br>**Parsing errors:** Profile page structure may have changed; verify the page loads correctly<br>**Missing address data:** Some profiles may not have current address information<br>**Split errors:** Name/location format may vary for different profiles
+- **403 or blocked:** Your IP is being rejected; requires US residential proxies via `geoCode=us` and `super=true`
+- **Split error on header:** Profile page may not contain the expected "Name in City, State" format
+- **Missing JSON-LD:** Some profiles may not include `Person` or `FAQPage` structured data blocks
+- **Empty email list:** Not all profiles have a FAQ section with email addresses
+- **No current address:** Some profiles may not have a `current_address_section` element
 
 ## Output Format
 
-The script outputs key person information directly to console for quick lookup and verification purposes.
-
-## Supported Profile Types
-
-This scraper works with FastPeopleSearch profile pages including:
-- Individual person profiles
-- Profiles with current addresses
-- Profiles with age information
-- Multi-location profiles
-- Historical address data
+The script outputs 10 structured fields directly to console:
+- Full name, exact age
+- Current address with city, state, and ZIP code
+- Primary phone number and email address
+- Known aliases (up to 5)
+- Relatives (up to 5)
 
 ## Privacy & Legal Considerations
 
@@ -90,9 +101,9 @@ This scraper works with FastPeopleSearch profile pages including:
 
 ## Why Use Scrape.do?
 
-- Rotating premium proxies & geo-targeting
-- Built-in header spoofing
-- Handles redirects, CAPTCHAs, and JavaScript rendering
+- Rotating premium proxies & US geo-targeting
+- Automatic Cloudflare bypass with browser emulation
+- Handles JavaScript rendering and CAPTCHAs
 - 1000 free credits/month
 
 [Get your free API token here](https://dashboard.scrape.do/signup)

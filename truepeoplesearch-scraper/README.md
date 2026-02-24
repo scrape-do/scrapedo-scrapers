@@ -7,7 +7,7 @@ This folder includes a scraper for TruePeopleSearch.com people lookup using Pyth
 ## What's Included
 
 ### Person Information Scraper
-* `scrapePersonInfo.py`: Scrapes detailed person information from TruePeopleSearch profile pages including name, age, location, address, and phone number data.
+* `scrapePersonInfo.py`: Scrapes detailed person information from TruePeopleSearch profile pages including name, age, address, ZIP code, phone numbers, email addresses, aliases, and relatives.
 
 ## Requirements
 
@@ -37,52 +37,55 @@ The script will display person information in the console:
 
 ```yaml
 Name: Jane Doe
-Age: 42
-Address: 456 Oak Avenue
-City: Chicago
-State: IL
-Phone Number: (555) 123-4567
+Age: 23
+Address: 2912 Northern Ave WE
+City: Washington
+State: DC
+ZIP: 20001
+Phone: (202) 555-5555
+Email: janedoe@example.com
+Aliases: Jane Marie Doe, Jane D Smith
+Relatives: John Doe, Mary Doe, Robert Smith, Emily Doe, Thomas Doe
 ```
 
 ## Technical Details
 
 ### Data Extraction Method
-The scraper uses data attributes and schema.org microdata to extract person information from TruePeopleSearch profile pages:
+The scraper uses a combination of HTML data attributes and JSON-LD structured data to extract person information:
 
-- **Name extraction**: Uses `data-fn` and `data-ln` attributes from `div#personDetails`
-- **Age extraction**: Uses `data-age` attribute from person details div
-- **Address parsing**: Targets schema.org microdata with `itemprop` attributes
-- **Phone extraction**: Uses `data-link-to-more="phone"` selector with telephone microdata
+- **Name and age**: Extracted from `data-fn`, `data-ln`, and `data-age` attributes on `div#personDetails`
+- **Address, ZIP, phone, email**: Parsed from `ProfilePage` JSON-LD schema via `mainEntity` Person object
+- **Aliases**: Extracted from JSON-LD `alternateName` array
+- **Relatives**: Extracted from JSON-LD `relatedTo` array of nested Person objects
 - **US geo-targeting**: Uses `geoCode=us` parameter for residential proxy routing
 
 ### Element Selectors Used
-- Person details: `div#personDetails` with data attributes
-- Address link: `a[data-link-to-more="address"]`
-- Street address: `span[itemprop="streetAddress"]`
-- City: `span[itemprop="addressLocality"]`
-- State: `span[itemprop="addressRegion"]`
-- Phone: `a[data-link-to-more="phone"] span[itemprop="telephone"]`
+- Person details: `div#personDetails` with `data-fn`, `data-ln`, `data-age` attributes
+- JSON-LD: `<script type="application/ld+json">` with `@type: "ProfilePage"`
+- Address: JSON-LD `mainEntity.address` object
+- Phone/Email: JSON-LD `mainEntity.telephone` and `mainEntity.email` arrays
+- Aliases: JSON-LD `mainEntity.alternateName` array
+- Relatives: JSON-LD `mainEntity.relatedTo` array
 
 ### Proxy Configuration
-The script uses US-based residential proxies (`geoCode=us`) which are essential for accessing TruePeopleSearch content reliably.
+The script uses US-based residential proxies (`geoCode=us` + `super=true`) which are essential for accessing TruePeopleSearch. The site enforces US geoblocking and Cloudflare protection that blocks datacenter IPs.
 
 ## Common Errors
 
-**403 or 429:** Your IP might be blocked; the script uses US residential proxies via `geoCode=us`<br>**Element not found:** Person profile may not exist or be formatted differently<br>**Data attribute missing:** Profile structure may have changed; verify the page loads correctly<br>**Missing phone data:** Some profiles may not have phone number information<br>**Microdata parsing errors:** Schema.org markup may vary for different profiles
+- **403 or blocked:** Your IP is being rejected; requires US residential proxies via `geoCode=us` and `super=true`
+- **Element not found:** Person profile may not exist or page structure may have changed
+- **Missing JSON-LD:** Some profiles may not include the `ProfilePage` structured data block
+- **Empty email/phone arrays:** Not all profiles have email addresses or multiple phone numbers listed
+- **Data attribute missing:** Profile structure may have changed; verify the page loads correctly
 
 ## Output Format
 
-The script outputs comprehensive person information directly to console for quick lookup and verification purposes.
-
-## Supported Profile Types
-
-This scraper works with TruePeopleSearch profile pages including:
-- Individual person profiles
-- Profiles with current addresses
-- Profiles with phone numbers
-- Profiles with age information
-- Multi-location profiles
-- Historical contact data
+The script outputs 10 structured fields directly to console:
+- Full name, exact age
+- Current address with city, state, and ZIP code
+- Primary phone number and email address
+- Known aliases
+- Relatives (up to 5)
 
 ## Privacy & Legal Considerations
 
@@ -96,9 +99,9 @@ This scraper works with TruePeopleSearch profile pages including:
 
 ## Why Use Scrape.do?
 
-- Rotating premium proxies & geo-targeting
-- Built-in header spoofing
-- Handles redirects, CAPTCHAs, and JavaScript rendering
+- Rotating premium proxies & US geo-targeting
+- Automatic Cloudflare bypass with browser emulation
+- Handles JavaScript rendering and CAPTCHAs
 - 1000 free credits/month
 
 [Get your free API token here](https://dashboard.scrape.do/signup)

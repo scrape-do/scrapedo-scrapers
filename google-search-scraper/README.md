@@ -1,129 +1,77 @@
 # Google Search Scraper
 
-This repository provides Python scripts to scrape **multiple pages of organic results**, **search ads**, **FAQs**, and **related search terms** directly from Google Search using [Scrape.do](https://scrape.do).
-
-Scrape.do helps bypass Google's anti-bot mechanisms like WAFs, rate limits, CAPTCHAs and JavaScript rendering.
-
-All scripts use publicly accessible HTML data and require no login or session emulation.
+Six scripts that cover every section of the Google SERP: organic results, paid ads, "People also ask" questions, related searches, and a SERP API alternative that returns all of the above as structured JSON in a single call. All requests route through [Scrape.do](https://scrape.do) with residential proxies.
 
 [Find the full guide here.](https://scrape.do/blog/scraping-google-search-results/) 📔
 
----
+## What's Included
 
-## What’s Included
-
-* `firstPageResults.py`: Scrapes organic search results (title, link, snippet) from the first page.
-* `allOrganicResults.py`: Paginates through all available search result pages and extracts organic results.
-* `paidSearchAds.py`: Extracts top and bottom **sponsored search ads** (URL, title, description, display URL).
-* `frequentlyAskedQuestions.py`: Scrapes "People also ask" questions shown on the SERP.
-* `relatedSearchTerms.py`: Grabs keyword suggestions from the bottom of the SERP.
+| Script | What It Scrapes | Output |
+|--------|----------------|--------|
+| `firstPageResults.py` | Organic results from page 1 | `first-page-results.csv` |
+| `allOrganicResults.py` | Organic results across multiple pages | `all-organic-results.csv` |
+| `paidSearchAds.py` | Sponsored ad blocks (top + bottom) | `paid-search-ads.json` |
+| `frequentlyAskedQuestions.py` | "People also ask" accordion | `faq-results.json` |
+| `relatedSearchTerms.py` | "Related searches" at the bottom | `related-search-terms.json` |
+| `serpApiSearch.py` | Everything above via SERP API | `serp-api-search-results.json` |
 
 ## Requirements
 
 * Python 3.7+
-* `requests` and `beautifulsoup4` libraries&lt;br&gt;Install with:
-
-  ```bash
-  pip install requests beautifulsoup4
-  ```
-* A [Scrape.do API token](https://dashboard.scrape.do/signup) (**free** 1000 API credits/month)
+* `requests` and `beautifulsoup4`<br>`pip install requests beautifulsoup4`
+* A [Scrape.do API token](https://dashboard.scrape.do/signup) (**free** 1000 credits/month)
 
 ---
 
-## 🔍 How to Use Each Script
+## Quick Start
 
-### `firstPageResults.py`
+Every HTML-based script follows the same pattern — set your token and query, run it:
 
-**Scrapes all organic search results on the first Google SERP.**
+```python
+token = "<your_token>"
+query = "python web scraping"
+```
 
-1. Replace the query and token:
+```bash
+python firstPageResults.py
+python allOrganicResults.py    # also set MAX_PAGES = 5
+python paidSearchAds.py
+python frequentlyAskedQuestions.py
+python relatedSearchTerms.py
+```
 
-   ```python
-   scrape_token = "<your-token>"
-   query = "python web scraping"
-   ```
-2. Run:
+### SERP API: All-in-One
 
-   ```bash
-   python firstPageResults.py
-   ```
+`serpApiSearch.py` skips HTML parsing entirely. It calls Scrape.do's `/plugin/google/search` endpoint and gets organic results, ads, People Also Ask, and related searches back as structured JSON in one request:
 
-Outputs titles, URLs, and descriptions for the top 10 results.
+```python
+token = "<your_token>"
+query = "python web scraping"
+```
 
-### `allOrganicResults.py`
+```bash
+python serpApiSearch.py
+```
 
-**Paginates through multiple SERP pages to scrape all organic results.**
+Output → `serp-api-search-results.json` with `organic_results`, `top_ads`, `bottom_ads`, `related_questions`, `related_searches`.
 
-1. Set the query and token as above.
-2. Run the script:
+## How It Works
 
-   ```bash
-   python allOrganicResults.py
-   ```
+All HTML scripts use `super=true` for residential proxy rotation and `hl=en&gl=us` for English/US results. BeautifulSoup parses the response. The scripts target specific SERP sections:
 
-Prints full organic listings with position, title, and snippet text.
+- **Organic results** (`firstPageResults.py`, `allOrganicResults.py`): Grabs `div` containers with the `Ww4FFb` class, extracts `h3` title, `a` link, and `VwiC3b` description. The multi-page version paginates via `start=10`, `start=20`, etc.
+- **Paid ads** (`paidSearchAds.py`): Targets the `uEierd` ad container blocks, with fallback class matching for ad titles (`CCgQ5`, `vCa9Yd`, `QfkTvb`) and descriptions (`Va3FIb`, `r025kc`, `lVm3ye`).
+- **FAQs** (`frequentlyAskedQuestions.py`): Finds `div` elements with `jsname="yEVEwb"` — the "People also ask" accordion items.
+- **Related searches** (`relatedSearchTerms.py`): Targets `div.b2Rnsc.vIifob` at the bottom of the SERP.
 
-### `paidSearchAds.py`
+The **SERP API** (`serpApiSearch.py`) bypasses all of this by calling `/plugin/google/search`, which does the parsing server-side and returns clean JSON.
 
-**Scrapes paid search ads (sponsored results) including title, URL, and ad copy.**
+## Watch Out For
 
-1. Set the query and token:
-
-   ```python
-   scrape_token = "<your-token>"
-   query = "python web scraping"
-   ```
-2. Run:
-
-   ```bash
-   python paidSearchAds.py
-   ```
-
-Extracts ad data from the `uEierd` block used in Google's ad markup.
-
-### `frequentlyAskedQuestions.py`
-
-**Extracts the "People also ask" block (FAQs) from the search results.**
-
-1. Set query and token.
-2. Run:
-
-   ```bash
-   python frequentlyAskedQuestions.py
-   ```
-
-Returns question strings as shown in the FAQ accordion.
-
-### `relatedSearchTerms.py`
-
-**Scrapes the "Related searches" suggestions at the bottom of the SERP.**
-
-1. Set query and token.
-2. Run:
-
-   ```bash
-   python relatedSearchTerms.py
-   ```
-
-Prints related queries useful for keyword research and clustering.
+- **Google changes class names**: The HTML selectors (`Ww4FFb`, `uEierd`, etc.) can change without notice. The SERP API is more stable long-term.
+- **No ads for some queries**: Not every search triggers sponsored results — `paidSearchAds.py` will return an empty list.
+- **Pagination stops early**: Google may return fewer pages for tail-end queries. `allOrganicResults.py` stops when no more results are found.
 
 ---
 
-## ⚠️ Legal & Ethical Notes
-
-Please ensure:
-
-* You scrape only **public search results**
-* You **do not automate excessive requests** or violate [Google’s Terms of Service](https://policies.google.com/terms).
-* Scrape.do handles proxies, headers, and anti-bot solutions for you; but always use scraping responsibly.
-
----
-
-## 🚀 Why Use Scrape.do?
-
-* Rotating premium proxies & geo-targeting
-* Built-in header spoofing
-* Handles redirects, CAPTCHAs, and JavaScript rendering
-* 1000 free credits/month
-
-👉 [Get your free API token here](https://dashboard.scrape.do/signup)
+**Scrape.do** handles proxy rotation, header spoofing, CAPTCHAs, and JS rendering. [Get your free API token](https://dashboard.scrape.do/signup) (1000 credits/month).

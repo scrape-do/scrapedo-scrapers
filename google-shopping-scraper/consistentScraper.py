@@ -1,3 +1,4 @@
+import os
 import re
 import json
 import time
@@ -7,23 +8,56 @@ import requests
 from bs4 import BeautifulSoup
 from singleProductDetail import parse_product_details
 
+"""
+Google Shopping (udm=28) Consistent Scraper via scrape.do
+
+What this does
+--------------
+1) Run a single product extraction pass using async pagination
+2) Collect all unique products found across pages
+3) Extract basic info (title, price, image, seller, rating, reviews) from cards
+4) For products with detail parameters, fetch extended info via the OAPV endpoint
+5) Export JSON with all collected data
+
+Usage
+-----
+export SCRAPE_DO_TOKEN=<your_token>
+export GOOGLE_QUERY="your search query"
+python scraper_consistent.py
+
+Environment Variables
+--------------------
+- SCRAPE_DO_TOKEN: Your scrape.do API token (required)
+- GOOGLE_QUERY: Search query (default: "pc wireless gaming headset")
+- OUT_JSON: Output file name (default: "google_shopping_results.json")
+- MAX_PAGES: Maximum pages to scrape (default: 0 = unlimited)
+- PAUSE_SECONDS: Delay between requests (default: 1.0)
+"""
+
 # -----------------------------
 # Config
 # -----------------------------
-TOKEN = "<your-token>"
-QUERY = "pc wireless gaming headset"
+SCRAPE_DO_TOKEN = os.getenv("SCRAPE_DO_TOKEN", "<your_token>")
+QUERY = os.getenv("GOOGLE_QUERY", "pc wireless gaming headset")
 SEARCH_URL = f"https://www.google.com/search?q={urllib.parse.quote_plus(QUERY)}&udm=28"
 
-OUT_JSON = "google_shopping_results.json"
-PAGE_SIZE = 10
-MAX_PAGES = 0  # 0 = unlimited
-PAUSE_SECONDS = 1.0
+OUT_JSON = os.getenv("OUT_JSON", "google_shopping_results.json")
+
+# NOTE: Smaller PAGE_SIZE (for example 1) increases the number of requests sent
+# but can sometimes surface more total products, because each async page loads
+# a slightly different slice of results.
+PAGE_SIZE       = int(os.getenv("PAGE_SIZE", "10"))
+MAX_PAGES       = int(os.getenv("MAX_PAGES", "0"))  # 0 = unlimited
+REQUEST_TIMEOUT = int(os.getenv("REQUEST_TIMEOUT", "30"))
+PAUSE_SECONDS   = float(os.getenv("PAUSE_SECONDS", "1.0"))
 
 # -----------------------------
 # HTTP helper
 # -----------------------------
 def scrape_do(url: str, session: requests.Session) -> requests.Response:
-    api = f"http://api.scrape.do/?token={TOKEN}&url={urllib.parse.quote(url)}"
+    if not SCRAPE_DO_TOKEN or SCRAPE_DO_TOKEN.startswith("<PUT_"):
+        raise SystemExit("Set SCRAPE_DO_TOKEN env var (or edit the script).")
+    api = f"http://api.scrape.do/?token={SCRAPE_DO_TOKEN}&url={urllib.parse.quote(url)}"
     r = session.get(api)
     r.raise_for_status()
     return r

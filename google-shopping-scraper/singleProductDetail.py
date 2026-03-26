@@ -1,3 +1,4 @@
+import os
 import json
 import html
 import re
@@ -6,14 +7,39 @@ import urllib.parse
 import requests
 
 
-TOKEN = "<your-token>"
+"""
+Single Product Detail Script
+----------------------------
+
+This script is designed for the second H2 of the tutorial, where we
+copy a single `/async/oapv` request URL from the browser and replay it
+programmatically.
+
+It will:
+- Send the copied detail URL through Scrape.do
+- Parse the JSON response
+- Extract structured product details using `parse_product_details`
+- Collect the first 5 image URLs it finds in the detail payload
+
+Usage:
+    1. Copy a full `/async/oapv` URL from Chrome DevTools (as described in the article)
+    2. Paste it into the DETAIL_URL placeholder below
+    3. Set SCRAPE_DO_TOKEN in your environment
+    4. Run: python single_product_detail.py
+"""
+
+
+SCRAPE_DO_TOKEN = os.getenv("SCRAPE_DO_TOKEN", "<your_token>")
 
 # Paste the full /async/oapv URL you copied from the browser here:
 DETAIL_URL = "https://www.google.com/async/oapv?vet=12ahUKEwio5-WcwJ6RAxW2D1kFHUirKSs4FBD0yAR6BAgvECc..i&ved=2ahUKEwio5-WcwJ6RAxW2D1kFHUirKSs4FBCuiAZ6BAgvEBE&bl=TpiC&s=web&opi=95576897&sca_esv=b46502feac7af8df&udm=28&yv=3&ei=a6UuaeiFFraf5NoPyNam2QI&currentpv=1&q=wireless+gaming+headset&async_context=PV_OPEN&pvorigin=3&cs=1&async=catalogid:13769275119917897627,gpcid:15623829887498710473,headlineOfferDocid:2786845769671092314,rds:PC_15623829887498710473%7CPROD_PC_15623829887498710473,imageDocid:6663907422662909808,pvo:3,isp:true,ei:U6UuadjWMvvn5NoPkpmDiAU,localAnnotatedOfferDocid:2786845769671092314,vw:1343,query:wireless%20gaming%20headset,gl:0,pvt:hg,_fmt:jspb"
 
 def scrape_do(url: str, session: requests.Session) -> requests.Response:
     """Route requests through Scrape.do API to bypass blocks."""
-    api_url = f"http://api.scrape.do/?token={TOKEN}&url={urllib.parse.quote(url)}"
+    if not SCRAPE_DO_TOKEN or SCRAPE_DO_TOKEN.startswith("<"):
+        raise SystemExit("Please set SCRAPE_DO_TOKEN environment variable or edit the script")
+
+    api_url = f"http://api.scrape.do/?token={SCRAPE_DO_TOKEN}&url={urllib.parse.quote(url)}"
     r = session.get(api_url)
     r.raise_for_status()
     return r

@@ -1,3 +1,4 @@
+import os
 import re
 import json
 import time
@@ -7,17 +8,39 @@ import urllib.parse
 import requests
 from bs4 import BeautifulSoup
 
+"""
+Google Shopping Basic Search Results Scraper
+
+This script scrapes basic product information from Google Shopping search results:
+- Product titles
+- Prices
+- Images
+- Seller names
+- Ratings and review counts
+
+Results are exported to a CSV file.
+
+Usage:
+    export SCRAPE_DO_TOKEN=your_token
+    python google_shopping_search_basic.py
+
+Or edit SCRAPE_DO_TOKEN directly in the script.
+"""
+
 # Configuration
-TOKEN = "<your-token>"
+SCRAPE_DO_TOKEN = os.getenv("SCRAPE_DO_TOKEN", "<your_token>")
 QUERY = "wireless gaming headset"
 SEARCH_URL = f"https://www.google.com/search?q={urllib.parse.quote_plus(QUERY)}&udm=28"
-PAGE_SIZE = 10
-PAUSE_SECONDS = 1.0
+PAGE_SIZE = 10  # Products per page
+PAUSE_SECONDS = 1.0  # Delay between requests
 
 # HTTP helper function
 def scrape_do(url: str, session: requests.Session) -> requests.Response:
     """Route requests through Scrape.do API to bypass blocks"""
-    api_url = f"http://api.scrape.do/?token={TOKEN}&url={urllib.parse.quote(url)}"
+    if not SCRAPE_DO_TOKEN or SCRAPE_DO_TOKEN.startswith("<"):
+        raise SystemExit("Please set SCRAPE_DO_TOKEN environment variable or edit the script")
+    
+    api_url = f"http://api.scrape.do/?token={SCRAPE_DO_TOKEN}&url={urllib.parse.quote(url)}"
     r = session.get(api_url)
     r.raise_for_status()
     return r

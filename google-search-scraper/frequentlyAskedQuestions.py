@@ -1,31 +1,37 @@
 import requests
 import urllib.parse
+import json
 from bs4 import BeautifulSoup
 
-# Your Scrape.do token and search query
-scrape_token = "<your-token>"
+token = "<your_token>"
 query = "python web scraping"
 
-# Encode the search query and build Google URL
 encoded_query = urllib.parse.quote_plus(query)
-google_url = f"https://www.google.com/search?q={encoded_query}"
+google_url = f"https://www.google.com/search?q={encoded_query}&hl=en&gl=us"
+api_url = f"http://api.scrape.do/?token={token}&url={urllib.parse.quote(google_url, safe='')}&super=true"
 
-# Scrape.do wrapper URL - properly encode the Google URL
-api_url = f"https://api.scrape.do/?token={scrape_token}&url={urllib.parse.quote(google_url, safe='')}"
+response = requests.get(api_url, timeout=60)
 
-# Send the request
-response = requests.get(api_url)
-response.raise_for_status()
+if response.status_code != 200:
+    print(f"Request failed: {response.status_code}")
+    exit()
 
-# Parse the HTML
-soup = BeautifulSoup(response.text, 'html.parser')
+soup = BeautifulSoup(response.text, "html.parser")
+faq_results = soup.find_all("div", jsname="yEVEwb")
 
-# Find all FAQ sections with yEVEwb
-faq_results = soup.find_all('div', jsname='yEVEwb')
-
-# Extract FAQ questions
+questions = []
 for position, faq in enumerate(faq_results, 1):
-    question_element = faq.find('span')
-    if question_element:
-        question = question_element.get_text(strip=True)
-        print(f"{position}. {question}")
+    question_elem = faq.find("span")
+    if question_elem:
+        questions.append({
+            "position": position,
+            "question": question_elem.get_text(strip=True),
+        })
+
+with open("faq-results.json", "w", encoding="utf-8") as f:
+    json.dump(questions, f, indent=2, ensure_ascii=False)
+
+for q in questions:
+    print(f"{q['position']}. {q['question']}")
+
+print(f"\nFound {len(questions)} FAQ questions. Saved to faq-results.json")

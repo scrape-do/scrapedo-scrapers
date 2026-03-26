@@ -1,41 +1,46 @@
 import requests
 import urllib.parse
+import csv
 from bs4 import BeautifulSoup
 
-# Your Scrape.do token and search query
-scrape_token = "<your-token>"
+token = "<your_token>"
 query = "python web scraping"
 
-# Encode the search query and build Google URL
 encoded_query = urllib.parse.quote_plus(query)
-google_url = f"https://www.google.com/search?q={encoded_query}&start=0"  # start=0 for first page
+google_url = f"https://www.google.com/search?q={encoded_query}&hl=en&gl=us"
+api_url = f"http://api.scrape.do/?token={token}&url={urllib.parse.quote(google_url, safe='')}&super=true"
 
-# Scrape.do wrapper URL - properly encode the Google URL
-api_url = f"https://api.scrape.do/?token={scrape_token}&url={urllib.parse.quote(google_url, safe='')}"
+response = requests.get(api_url, timeout=60)
 
-# Send the request
-response = requests.get(api_url)
-response.raise_for_status()
+if response.status_code != 200:
+    print(f"Request failed: {response.status_code}")
+    exit()
 
-# Parse the HTML
-soup = BeautifulSoup(response.text, 'html.parser')
+soup = BeautifulSoup(response.text, "html.parser")
+search_results = soup.find_all("div", class_=lambda x: x and "Ww4FFb" in x)
 
-# Find all search results with Ww4FFb class
-search_results = soup.find_all('div', class_=lambda x: x and 'Ww4FFb' in x)
-
-# Extract data from each result
+results = []
 for position, result in enumerate(search_results, 1):
-    # Get title from h3 tag
-    title = result.find('h3').get_text(strip=True)
+    title_tag = result.find("h3")
+    link_tag = result.find("a")
+    desc_tag = result.find(class_="VwiC3b")
 
-    # Get URL from link
-    url = result.find('a').get('href')
+    results.append({
+        "position": position,
+        "title": title_tag.get_text(strip=True) if title_tag else None,
+        "url": link_tag.get("href") if link_tag else None,
+        "description": desc_tag.get_text(strip=True) if desc_tag else None,
+    })
 
-    # Get description/snippet
-    desc_element = result.find(class_='VwiC3b')
-    description = desc_element.get_text(strip=True) if desc_element else "No description"
+with open("first-page-results.csv", "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=["position", "title", "url", "description"])
+    writer.writeheader()
+    writer.writerows(results)
 
-    print(f"{position}. {title}")
-    print(f"   URL: {url}")
-    print(f"   Description: {description}")
+for r in results:
+    print(f"{r['position']}. {r['title']}")
+    print(f"   URL: {r['url']}")
+    print(f"   Description: {r['description']}")
     print()
+
+print(f"Saved {len(results)} results to first-page-results.csv")
